@@ -24,6 +24,9 @@ input[type="reset"] {
 button:hover {
     background-color: grey;
 }
+.bought {
+    background-color: grey;
+}
 p:hover,
 h1:hover {
     cursor: default;
@@ -38,6 +41,12 @@ button:hover {
     -webkit-text-stroke-width: 0.5px;
     -webkit-text-stroke-color: rgb(248, 177, 248);
 }
+.hidden {
+    display:none;
+}
+.container {
+    display:flex;
+}
 .circleGen {
     width: 200px;
     height: 200px;
@@ -47,13 +56,13 @@ button:hover {
     border-color: white;
     border-radius: 5px;
 }
-#betaGenerator {
+#generatorBeta {
     margin-left: 500px;
 }
-#gammaGenerator {
+#generatorGamma {
     margin-top: 500px;
 }
-#deltaGenerator {
+#generatorDelta {
     margin-top: 500px;
     margin-left: 500px;
 }

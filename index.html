@@ -4,38 +4,48 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+    <p style="margin-left: 20px">Numberless</p>
+    <div id="tabBar" style="margin-bottom: 20px">
+        <button id="generatorTab" class="tabButton toggle">Generators</button>
+        <button id="unlockTab" class="tabButton">Unlock</button>
+    </div>
     <div id="generatorPage" class="page">
-        <div id="alphaGenerator" class="circleGen">
+        <div id="generatorAlpha" class="circleGen">
             <div id="alphaBar" class="generatorBar"></div>
             <p class="genText">&alpha;</p>
         </div>
-        <div id="betaGenerator" class="circleGen">
+        <div id="generatorBeta" class="circleGen hidden">
             <div id="betaBar" class="generatorBar"></div>
             <p class="genText">&beta;</p>
         </div>
-        <div id="gammaGenerator" class="circleGen">
+        <div id="generatorGamma" class="circleGen hidden">
             <div id="gammaBar" class="generatorBar"></div>
             <p class="genText">&gamma;</p>
         </div>
-        <div id="deltaGenerator" class="circleGen">
+        <div id="generatorDelta" class="circleGen hidden">
             <div id="deltaBar" class="generatorBar"></div>
             <p class="genText">&delta;</p>
         </div>
-        <div id="infusionAlphaBeta" class="infusionBar horizontalBar">
+        <div id="infusionAlphaBeta" class="infusionBar horizontalBar hidden">
             <div id="barAlphaBeta" class="generatorBar"></div>
             <p class="infusionText">&alpha;-&beta;</p>
         </div>
-        <div id="infusionAlphaGamma" class="infusionBar verticalBar">
+        <div id="infusionAlphaGamma" class="infusionBar verticalBar hidden">
             <div id="barAlphaGamma" class="generatorBar"></div>
             <p class="infusionText verticalBarText">&alpha;-&gamma;</p>
         </div>
-        <div id="infusionGammaDelta" class="infusionBar horizontalBar">
+        <div id="infusionGammaDelta" class="infusionBar horizontalBar hidden">
             <div id="barGammaDelta" class="generatorBar"></div>
             <p class="infusionText">&gamma;-&delta;</p>
         </div>
-        <div id="infusionBetaDelta" class="infusionBar verticalBar">
+        <div id="infusionBetaDelta" class="infusionBar verticalBar hidden">
             <div id="barBetaDelta" class="generatorBar"></div>
             <p class="infusionText verticalBarText">&beta;-&delta;</p>
+        </div>
+    </div>
+    <div id="unlockPage" class="page hidden">
+        <div class="container">
+            <button id="betaUnlock">&beta;</button>
         </div>
     </div>
     <script src="script.js"></script>
