@@ -3,3 +3,6 @@ Created generator page
 
 0.02 -
 Added tabs and tabbing
+
+0.03 -
+Generators now fill when unlocked
