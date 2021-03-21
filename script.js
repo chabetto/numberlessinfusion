@@ -1,37 +1,13 @@
 /*
 to be done:
-game loool
+generators work in background
 */
 
 // original player stats (do not save)
-let ogPlayer = {
-    times: {
-        Alpha: 5,
-    },
-    names: [
-        "Alpha",
-        "Beta",
-        "Gamma",
-        "Delta",
-        "AlphaBeta",
-        "BetaDelta",
-        "AlphaGamma",
-        "GammaDelta",
-    ],
-};
+let ogPlayer = {};
 
 // what will prob be the original save
 let player = {
-    bars: {
-        Alpha: {
-            name: "Alpha",
-            time: 5,
-            vertical: true,
-            infusion: false,
-            percentage: 0,
-            unlocked: true,
-        },
-    },
     NAMES: [
         "Alpha",
         "Beta",
@@ -49,8 +25,6 @@ let player = {
     UNLOCKED: [true, false, false, false, false, false, false, false],
     bought: [],
     permanent: [],
-    unlockedGen: [true, false, false, false],
-    unlockedInf: [false, false, false, false],
     update: 0.05,
     stopTime: false,
 };
@@ -93,6 +67,19 @@ class resource {
         } else if (this.percentage === NaN) {
             this.reset();
         }
+    }
+    spend() {
+        if (this.point) {
+            this.reset();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    reset() {
+        this.point = false;
+        this.percentage = 0;
+        this.showPercentage();
     }
 }
 
@@ -138,7 +125,7 @@ function showID(idstr) {
 
 function removeButtonClick(id) {
     let button = document.querySelector(`#${id}`);
-    button.removeEventListener("click", buttonClickListener);
+    button.removeEventListener("click", buttonFunction);
     button.classList.add("bought");
 }
 
@@ -172,11 +159,19 @@ function buttonFunction(e) {
     let id = e.target.id;
     console.log(id);
     if (id.slice(id.length - 3) === "Tab") showTab(id);
-    else if (id.slice(0, 6) === "unlock") unlockFunction(id);
+    // tabbing
+    else if (id.slice(0, 6) === "unlock") unlockFunction(id); // unlock tab
 }
 
-function unlockFunction(id) {
-    //console.log('hello')
+function unlockFunction(idButton) {
+    let id = idButton.slice(6);
+    if (player.NAMES.includes(id)) {
+        toSpend = player.NAMES[player.NAMES.indexOf(id) - 1];
+        if (resources[toSpend].spend()) {
+            resources[id].unlock();
+            removeButtonClick(idButton);
+        }
+    }
 }
 
 function incrementBars() {

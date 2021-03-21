@@ -6,3 +6,6 @@ Added tabs and tabbing
 
 0.03 -
 Generators now fill when unlocked
+
+0.04 -
+Unlock button functionality
