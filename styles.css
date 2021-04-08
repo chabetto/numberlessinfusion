@@ -27,7 +27,9 @@ button:hover {
     background-color: grey;
 }
 .bought {
-    background-color: grey;
+    background-color: black;
+    color: white;
+    border-color: white;
 }
 p:hover,
 h1:hover {
@@ -35,6 +37,10 @@ h1:hover {
 }
 button:hover {
     cursor: pointer;
+}
+.bought:hover {
+    cursor: default;
+    background-color: black;
 }
 .toggle {
     color: rgb(248, 177, 248);
@@ -48,6 +54,15 @@ button:hover {
 }
 .container {
     display: flex;
+}
+.repeatable {
+    width: 700px;
+    height: 50px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+    border-radius: 5px;
+    margin-left: 10px;
 }
 .circleGen {
     width: 200px;
@@ -68,6 +83,22 @@ button:hover {
     margin-top: 500px;
     margin-left: 500px;
 }
+.barsAlpha {
+    background-color: lightcoral;
+    height: 100%;
+}
+.barsBeta {
+    background-color: rgb(2, 179, 2);
+    height: 100%;
+}
+.barsGamma {
+    background-color: rgb(253, 94, 36);
+    height: 100%;
+}
+.barsDelta {
+    background-color: rgb(73, 73, 255);
+    height: 100%;
+}
 #barAlpha {
     background-color: lightcoral;
     width: 100%;
@@ -86,6 +117,9 @@ button:hover {
 }
 .generatorBar {
     position: absolute;
+    transition-duration: 0.1s;
+}
+.progressBar {
     transition-duration: 0.1s;
 }
 .genText {

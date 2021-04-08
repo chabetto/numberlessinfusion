@@ -4,10 +4,19 @@ generators work in background
 */
 
 // original player stats (do not save)
-let ogPlayer = {};
 
-// what will prob be the original save
-let player = {
+const OGREPEATABLE = {
+    upgradeAlphaTime: {
+        id: "upgradeAlphaTime",
+        cost: "Alpha",
+        amountBought: 0,
+        total: 20,
+    },
+};
+
+let newRepeatable = {};
+
+const ogPlayer = {
     NAMES: [
         "Alpha",
         "Beta",
@@ -21,13 +30,43 @@ let player = {
     TIMES: [5, 50, 500, 3600, 30, 30, 30, 30],
     VERTICAL: [true, true, true, true, true, false, false, true],
     INFUSION: [false, false, false, false, true, true, true, true],
-    PERCENTAGE: [0, 0, 0, 0, 0, 0, 0, 0],
+    percentage: [0, 0, 0, 0, 0, 0, 0, 0],
     UNLOCKED: [true, false, false, false, false, false, false, false],
     bought: [],
     permanent: [],
     update: 0.05,
     stopTime: false,
 };
+
+// what will prob be the original save
+let player = {};
+
+class repeatUpgrade {
+    constructor(id, cost, amountBought, total) {
+        this.id = id;
+        this.button = document.querySelector(`#${id}`);
+        this.bar = document.querySelector(`#${id}Bar`);
+        this.cost = cost;
+        this.percentage = (amountBought / total) * 100;
+        this.showPercentage();
+    }
+    showPercentage() {
+        this.bar.style.width = `${this.percentage}%`;
+        if (this.percentage === 100) {
+            this.button.classList.add("bought");
+            removeButtonClick(this.id);
+        }
+    }
+    buyOnce() {
+        if (resources[cost].spend()) {
+            this.percentage += 100 / total;
+            this.showPercentage();
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 class resource {
     constructor(name, time, vertical, infusion, percentage, unlocked) {
@@ -41,8 +80,11 @@ class resource {
         this.time = time;
         this.unlocked = unlocked;
         this.percentage = percentage;
+        this.index = player.NAMES.indexOf(this.name);
         if (unlocked) {
             this.unlock();
+        } else {
+            this.hide();
         }
         this.showPercentage();
     }
@@ -50,10 +92,15 @@ class resource {
         showClass(this.name);
         this.unlocked = true;
     }
+    hide() {
+        hideClass(this.name);
+        this.unlocked = false;
+    }
     showPercentage() {
         this.vertical
             ? (this.bar.style.height = `${this.percentage}%`)
             : (this.bar.style.width = `${this.percentage}%`);
+        player.percentage[this.index] = this.percentage;
     }
     updateBar() {
         if (this.percentage < 100) {
@@ -92,10 +139,26 @@ function createResources() {
             player.TIMES[i],
             player.VERTICAL[i],
             player.INFUSION[i],
-            player.PERCENTAGE[i],
+            player.percentage[i],
             player.UNLOCKED[i]
         );
     }
+}
+
+let repeatables = {};
+
+function createRepeatable() {
+    let buttons = document.querySelectorAll(".repeat");
+    buttons.forEach((button) => {
+        let id = button.id;
+        let info = newRepeatable[id];
+        repeatables[id] = new repeatUpgrade(
+            info.id,
+            info.cost,
+            info.amountBought,
+            info.total
+        );
+    });
 }
 
 // insert class name
@@ -168,10 +231,16 @@ function unlockFunction(idButton) {
     if (player.NAMES.includes(id)) {
         toSpend = player.NAMES[player.NAMES.indexOf(id) - 1];
         if (resources[toSpend].spend()) {
-            resources[id].unlock();
-            removeButtonClick(idButton);
+            unlockThing(idButton);
+            player.bought.push(idButton);
         }
     }
+}
+
+function unlockThing(idButton) {
+    let id = idButton.slice(6);
+    resources[id].unlock();
+    removeButtonClick(idButton);
 }
 
 function incrementBars() {
@@ -183,14 +252,62 @@ function incrementBars() {
 }
 
 function startTime() {
+    player.stopTime = false;
     let gameTime = window.setInterval(() => {
         incrementBars();
         if (player.stopTime) clearInterval(gameTime);
     }, player.update * 1000);
 }
 
-window.onload = function () {
+function loadBought() {
+    for (item in player.bought) {
+        let id = player.bought[item];
+        if (id.slice(0, 6) === "unlock") unlockThing(id);
+    }
+}
+
+function loadPlayer() {
+    if (localStorage.getItem("player") === null) {
+        player = ogPlayer;
+        newRepeatable = OGREPEATABLE;
+    } else {
+        player = JSON.parse(localStorage.getItem("player"));
+        newRepeatable = JSON.parse(localStorage.getItem("newRepeatable"));
+    }
+}
+
+function startSaves() {
+    let saveTime = window.setInterval(() => {
+        saving();
+        if (player.stopTime) clearInterval(saveTime);
+    }, 10000);
+}
+
+function saving() {
+    localStorage.setItem("player", JSON.stringify(player));
+    localStorage.setItem("newRepeatable", JSON.stringify(newRepeatable));
+    console.log("saved");
+}
+
+function restartGame() {
+    player.stopTime = true;
+    window.localStorage.clear();
+    loadPlayer();
     addButtonListeners(false);
     createResources();
     startTime();
+    createRepeatable();
+    startSaves();
+    loadBought();
+}
+
+window.onload = function () {
+    loadPlayer();
+    addButtonListeners(false);
+    createResources();
+    startTime();
+    createRepeatable();
+    startSaves();
+    loadBought();
+    //restartGame();
 };

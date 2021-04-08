@@ -6,8 +6,11 @@
 <body>
     <h1 style="margin-left: 20px">Numberless</h1>
     <div id="tabBar" style="margin-bottom: 20px">
-        <button id="generatorTab" class="tabButton toggle">Generators</button>
-        <button id="unlockTab" class="tabButton">Unlock</button>
+        <button id="generatorTab" class="tabButton toggle hidden Alpha">
+            Generators
+        </button>
+        <button id="unlockTab" class="tabButton hidden Alpha">Unlock</button>
+        <button id="upgradesTab" class="tabButton hidden Beta">Upgrades</button>
     </div>
     <div id="generatorPage" class="page">
         <div id="generatorAlpha" class="circleGen Alpha hidden">
@@ -60,6 +63,19 @@
             <button id="unlockBeta" class="Alpha hidden">&beta;</button>
             <button id="unlockGamma" class="Beta hidden">&gamma;</button>
             <button id="unlockDelta" class="Gamma hidden">&delta;</button>
+        </div>
+    </div>
+    <div id="upgradesPage" class="page hidden">
+        <div class="container">
+            <button id="upgradeAlphaTime" class="Alpha hidden repeat">
+                &alpha;T
+            </button>
+            <div class="repeatable Alpha hidden">
+                <div
+                    id="upgradeAlphaTimeBar"
+                    class="progressBar barsAlpha"
+                ></div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

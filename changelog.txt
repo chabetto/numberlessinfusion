@@ -8,4 +8,10 @@ Added tabs and tabbing
 Generators now fill when unlocked
 
 0.04 -
-Unlock button functionality
+Tab button functionality
+
+0.05 -
+Added saving and loading functionality
+Added upgrades page
+Added repeatable upgrade for alpha (doesn't do anything for now)
+Added capacity to restart
