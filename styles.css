@@ -54,6 +54,7 @@ button:hover {
 }
 .container {
     display: flex;
+    margin-bottom: 10px;
 }
 .repeatable {
     width: 700px;

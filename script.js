@@ -1,6 +1,10 @@
 /*
 to be done:
 generators work in background
+
+features:
+gamma bought -> infusion tab
+grid of upgrades that progress the game -> 1x1 is unlock a-b gen, cost a and b, 1x2 unspent a, 1x3 unspent b, reduce time resource next to it when full and of a-b 
 */
 
 // original player stats (do not save)
@@ -10,7 +14,25 @@ const OGREPEATABLE = {
         id: "upgradeAlphaTime",
         cost: "Alpha",
         amountBought: 0,
-        total: 20,
+        total: 6,
+    },
+    upgradeBetaTime: {
+        id: "upgradeBetaTime",
+        cost: "Beta",
+        amountBought: 0,
+        total: 4,
+    },
+    upgradeGammaTime: {
+        id: "upgradeGammaTime",
+        cost: "Gamma",
+        amountBought: 0,
+        total: 3,
+    },
+    upgradeDeltaTime: {
+        id: "upgradeDeltaTime",
+        cost: "Delta",
+        amountBought: 0,
+        total: 2,
     },
 };
 
@@ -48,19 +70,27 @@ class repeatUpgrade {
         this.bar = document.querySelector(`#${id}Bar`);
         this.cost = cost;
         this.percentage = (amountBought / total) * 100;
+        this.amountBought = amountBought;
+        this.total = total;
         this.showPercentage();
     }
     showPercentage() {
-        this.bar.style.width = `${this.percentage}%`;
-        if (this.percentage === 100) {
+        if (Math.round(this.percentage) >= 100) {
+            this.percentage = 100;
             this.button.classList.add("bought");
             removeButtonClick(this.id);
         }
+        this.bar.style.width = `${this.percentage}%`;
+    }
+    updateAmount() {
+        this.amountBought += 1;
+        newRepeatable[this.id].amountBought += 1;
     }
     buyOnce() {
-        if (resources[cost].spend()) {
-            this.percentage += 100 / total;
+        if (resources[this.cost].spend()) {
+            this.percentage += 100 / this.total;
             this.showPercentage();
+            this.updateAmount();
             return true;
         } else {
             return false;
@@ -223,7 +253,9 @@ function buttonFunction(e) {
     console.log(id);
     if (id.slice(id.length - 3) === "Tab") showTab(id);
     // tabbing
-    else if (id.slice(0, 6) === "unlock") unlockFunction(id); // unlock tab
+    else if (id.slice(0, 6) === "unlock") unlockFunction(id);
+    // unlock tab
+    else if (id.slice(0, 7) === "upgrade") upgradeFunction(id); // upgrade tab
 }
 
 function unlockFunction(idButton) {
@@ -233,6 +265,19 @@ function unlockFunction(idButton) {
         if (resources[toSpend].spend()) {
             unlockThing(idButton);
             player.bought.push(idButton);
+        }
+    }
+}
+
+function upgradeFunction(idButton) {
+    id = idButton.slice(7);
+    if (id.includes("Time")) {
+        if (repeatables[idButton].buyOnce()) {
+            res = repeatables[idButton].cost;
+            index = resources[res].index;
+            player.TIMES[index] /= 2 ** (1 / repeatables[idButton].total);
+            console.log(2 ** (1 / repeatables[idButton].total));
+            resources[res].time /= 2 ** (1 / repeatables[idButton].total);
         }
     }
 }
@@ -280,7 +325,7 @@ function startSaves() {
     let saveTime = window.setInterval(() => {
         saving();
         if (player.stopTime) clearInterval(saveTime);
-    }, 10000);
+    }, 5000);
 }
 
 function saving() {
@@ -299,10 +344,22 @@ function restartGame() {
     createRepeatable();
     startSaves();
     loadBought();
+    showTab("generatorTab");
+}
+
+function fromStart() {
+    player = ogPlayer;
+    newRepeatable = OGREPEATABLE;
+}
+
+function cheating() {
+    player.TIMES = [1, 1, 1, 1, 1, 1, 1, 1];
 }
 
 window.onload = function () {
     loadPlayer();
+    //fromStart();
+    //cheating();
     addButtonListeners(false);
     createResources();
     startTime();

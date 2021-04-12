@@ -15,3 +15,6 @@ Added saving and loading functionality
 Added upgrades page
 Added repeatable upgrade for alpha (doesn't do anything for now)
 Added capacity to restart
+
+0.06 - 
+Added repeatable time upgrades
