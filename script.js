@@ -3,8 +3,6 @@ to be done:
 generators work in background
 
 features:
-gamma bought -> infusion tab
-grid of upgrades that progress the game -> 1x1 is unlock a-b gen, cost a and b, 1x2 unspent a, 1x3 unspent b, reduce time resource next to it when full and of a-b 
 */
 
 // original player stats (do not save)
@@ -55,7 +53,6 @@ const ogPlayer = {
     percentage: [0, 0, 0, 0, 0, 0, 0, 0],
     UNLOCKED: [true, false, false, false, false, false, false, false],
     bought: [],
-    permanent: [],
     update: 0.05,
     stopTime: false,
 };
@@ -101,6 +98,8 @@ class repeatUpgrade {
 class resource {
     constructor(name, time, vertical, infusion, percentage, unlocked) {
         this.name = name;
+        this.inHTML = `&${name.toLowerCase()};`;
+        this.isdone = document.querySelector(`#${name}IsDone`);
         this.bar = document.querySelector(`#bar${name}`);
         this.container = infusion
             ? document.querySelector(`#infusion${name}`)
@@ -139,6 +138,7 @@ class resource {
             if (this.percentage >= 100) {
                 this.percentage = 100;
                 this.point = true;
+                this.isdone.classList.remove("hidden");
             }
             this.showPercentage();
         } else if (this.percentage === NaN) {
@@ -157,6 +157,7 @@ class resource {
         this.point = false;
         this.percentage = 0;
         this.showPercentage();
+        this.isdone.classList.add("hidden");
     }
 }
 
@@ -235,13 +236,10 @@ function showTab(id) {
 }
 
 // will prob need to not add it to perm bought stuff :)
-function addButtonListeners(reset) {
+function addButtonListeners() {
     let buttons = document.querySelectorAll("button");
     buttons.forEach((button) => {
-        if (
-            (!player.bought.includes(button.id) & reset) |
-            !player.permanent.includes(button.id)
-        ) {
+        if (!player.bought.includes(button.id)) {
             button.addEventListener("click", buttonFunction);
             button.classList.remove("bought");
         }
@@ -338,7 +336,7 @@ function restartGame() {
     player.stopTime = true;
     window.localStorage.clear();
     loadPlayer();
-    addButtonListeners(false);
+    addButtonListeners();
     createResources();
     startTime();
     createRepeatable();
@@ -356,11 +354,59 @@ function cheating() {
     player.TIMES = [1, 1, 1, 1, 1, 1, 1, 1];
 }
 
+function showDescription(e) {
+    let id = e.target.id;
+    const tabs = ["generators", "unlock", "upgrades", "skills", "idk"];
+    const descriptions = {
+        unlockBeta: [
+            "unlock the &beta; generator and the upgrades tab",
+            "costs &alpha;",
+        ],
+        unlockGamma: [
+            "unlock the &gamma; generator and the skills tab",
+            "costs &beta;",
+        ],
+        unlockDelta: [
+            "unlock the &delta; generator and the ??? tab",
+            "costs &gamma;",
+        ],
+    };
+    let buttonText = e.target.innerHTML.trim();
+    console.log(id, buttonText);
+    let div = document.querySelector("#desc");
+    let title = document.createElement("p");
+    title.innerHTML = tabs.includes(buttonText) ? "" : buttonText;
+    let text = document.createElement("p");
+    let cost = document.createElement("p");
+    if (id in descriptions) {
+        text.innerHTML = descriptions[id][0];
+        cost.innerHTML = descriptions[id][1];
+    } else if (id.includes("upgrade") && id.includes("Time")) {
+        let res = buttonText.slice(0, -1);
+        text.innerHTML = `reduce the time of the ${res} generator`;
+        cost.innerHTML = `costs ${res}`;
+    }
+    div.innerHTML = "";
+    div.appendChild(title);
+    div.appendChild(text);
+    div.appendChild(cost);
+}
+
+function addButtonHover() {
+    let buttons = document.querySelectorAll("button");
+    buttons.forEach((button) => {
+        button.addEventListener("mouseover", showDescription);
+    });
+}
+
 window.onload = function () {
+    //player = ogPlayer;
+    //newRepeatable = OGREPEATABLE;
     loadPlayer();
     //fromStart();
     //cheating();
-    addButtonListeners(false);
+    addButtonListeners();
+    addButtonHover();
     createResources();
     startTime();
     createRepeatable();

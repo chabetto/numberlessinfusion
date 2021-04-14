@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <head>
-    <title>Numberless</title>
+    <title>numberless</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1 style="margin-left: 20px">Numberless</h1>
-    <div id="tabBar" style="margin-bottom: 20px">
+    <h1 style="margin-left: 20px">numberless</h1>
+    <div id="tabBar">
         <button id="generatorTab" class="tabButton toggle hidden Alpha">
-            Generators
+            generators
         </button>
-        <button id="unlockTab" class="tabButton hidden Alpha">Unlock</button>
-        <button id="upgradesTab" class="tabButton hidden Beta">Upgrades</button>
+        <button id="unlockTab" class="tabButton hidden Alpha">unlock</button>
+        <button id="upgradesTab" class="tabButton hidden Beta">upgrades</button>
+        <button id="skillsTab" class="tabButton hidden Gamma">skills</button>
+        <button id="idkTab" class="tabButton hidden Delta">idk</button>
+    </div>
+    <div id="isDone">
+        <p class="isDone">--</p>
+        <p id="AlphaIsDone" class="isDone hidden">&alpha;</p>
+        <p id="BetaIsDone" class="isDone hidden">&beta;</p>
+        <p id="GammaIsDone" class="isDone hidden">&gamma;</p>
+        <p id="DeltaIsDone" class="isDone hidden">&delta;</p>
+        <p class="isDone">--</p>
     </div>
     <div id="generatorPage" class="page">
         <div id="generatorAlpha" class="circleGen Alpha hidden">
@@ -68,7 +78,7 @@
     <div id="upgradesPage" class="page hidden">
         <div class="container">
             <button id="upgradeAlphaTime" class="Alpha hidden repeat">
-                &alpha;T
+                &alpha;t
             </button>
             <div class="repeatable Alpha hidden">
                 <div
@@ -79,7 +89,7 @@
         </div>
         <div class="container">
             <button id="upgradeBetaTime" class="Beta hidden repeat">
-                &beta;T
+                &beta;t
             </button>
             <div class="repeatable Beta hidden">
                 <div id="upgradeBetaTimeBar" class="progressBar barsBeta"></div>
@@ -87,7 +97,7 @@
         </div>
         <div class="container">
             <button id="upgradeGammaTime" class="Gamma hidden repeat">
-                &gamma;T
+                &gamma;t
             </button>
             <div class="repeatable Gamma hidden">
                 <div
@@ -98,7 +108,7 @@
         </div>
         <div class="container">
             <button id="upgradeDeltaTime" class="Delta hidden repeat">
-                &delta;T
+                &delta;t
             </button>
             <div class="repeatable Delta hidden">
                 <div
@@ -108,5 +118,16 @@
             </div>
         </div>
     </div>
+    <div id="skillsPage" class="page hidden">
+        <p>
+            grid of upgrades that progress the game -> 1x1 is unlock a-b gen,
+            cost a and b, 1x2 unspent a, 1x3 unspent b, reduce time resource
+            next to it when full and of a-b
+        </p>
+    </div>
+    <div id="idkPage" class="page hidden">
+        <p>idk</p>
+    </div>
+    <div id="desc"></div>
     <script src="script.js"></script>
 </body>

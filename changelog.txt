@@ -18,3 +18,9 @@ Added capacity to restart
 
 0.06 - 
 Added repeatable time upgrades
+
+0.07 - 
+Added bar showing which gen is done 
+Changed gen page to be smaller so it fits
+Added info when hovering over button
+added 2 new tabs - skills and another one
