@@ -13,6 +13,7 @@
         <button id="upgradesTab" class="tabButton hidden Beta">upgrades</button>
         <button id="skillsTab" class="tabButton hidden Gamma">skills</button>
         <button id="idkTab" class="tabButton hidden Delta">idk</button>
+        <button id="helpTab" class="tabButton hidden Alpha">help</button>
     </div>
     <div id="isDone">
         <p class="isDone">--</p>
@@ -20,6 +21,10 @@
         <p id="BetaIsDone" class="isDone hidden">&beta;</p>
         <p id="GammaIsDone" class="isDone hidden">&gamma;</p>
         <p id="DeltaIsDone" class="isDone hidden">&delta;</p>
+        <p id="AlphaBetaIsDone" class="isDone hidden">&alpha;&beta;</p>
+        <p id="BetaGammaIsDone" class="isDone hidden">&beta;&gamma;</p>
+        <p id="BetaDeltaIsDone" class="isDone hidden">&beta;&delta;</p>
+        <p id="GammaDeltaIsDone" class="isDone hidden">&gamma;&delta;</p>
         <p class="isDone">--</p>
     </div>
     <div id="generatorPage" class="page">
@@ -69,7 +74,7 @@
         </div>
     </div>
     <div id="unlockPage" class="page hidden">
-        <div class="container">
+        <div class="container grid">
             <button id="unlockBeta" class="Alpha hidden">&beta;</button>
             <button id="unlockGamma" class="Beta hidden">&gamma;</button>
             <button id="unlockDelta" class="Gamma hidden">&delta;</button>
@@ -119,6 +124,9 @@
         </div>
     </div>
     <div id="skillsPage" class="page hidden">
+        <div class="container">
+            <button id="skillUnlockAlphaBeta">&alpha;&beta;</button>
+        </div>
         <p>
             grid of upgrades that progress the game -> 1x1 is unlock a-b gen,
             cost a and b, 1x2 unspent a, 1x3 unspent b, reduce time resource
@@ -127,6 +135,12 @@
     </div>
     <div id="idkPage" class="page hidden">
         <p>idk</p>
+    </div>
+    <div id="helpPage" class="page hidden">
+        <p>this is a short introduction of numberless</p>
+        <p>you start by generating &alpha; (shown by the bar increasing)</p>
+        <p>the bar below the tabs shows which generator is done</p>
+        <p>if you hover over a button it tells you the effect and the cost</p>
     </div>
     <div id="desc"></div>
     <script src="script.js"></script>

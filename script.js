@@ -98,6 +98,7 @@ class repeatUpgrade {
 class resource {
     constructor(name, time, vertical, infusion, percentage, unlocked) {
         this.name = name;
+        this.infusion = infusion;
         this.inHTML = `&${name.toLowerCase()};`;
         this.isdone = document.querySelector(`#${name}IsDone`);
         this.bar = document.querySelector(`#bar${name}`);
@@ -112,10 +113,10 @@ class resource {
         this.index = player.NAMES.indexOf(this.name);
         if (unlocked) {
             this.unlock();
+            this.showPercentage();
         } else {
             this.hide();
         }
-        this.showPercentage();
     }
     unlock() {
         showClass(this.name);
@@ -130,6 +131,9 @@ class resource {
             ? (this.bar.style.height = `${this.percentage}%`)
             : (this.bar.style.width = `${this.percentage}%`);
         player.percentage[this.index] = this.percentage;
+        this.percentage === 100
+            ? this.isdone.classList.remove("hidden")
+            : this.isdone.classList.add("hidden");
     }
     updateBar() {
         if (this.percentage < 100) {
@@ -138,7 +142,6 @@ class resource {
             if (this.percentage >= 100) {
                 this.percentage = 100;
                 this.point = true;
-                this.isdone.classList.remove("hidden");
             }
             this.showPercentage();
         } else if (this.percentage === NaN) {
@@ -157,7 +160,6 @@ class resource {
         this.point = false;
         this.percentage = 0;
         this.showPercentage();
-        this.isdone.classList.add("hidden");
     }
 }
 
@@ -253,7 +255,9 @@ function buttonFunction(e) {
     // tabbing
     else if (id.slice(0, 6) === "unlock") unlockFunction(id);
     // unlock tab
-    else if (id.slice(0, 7) === "upgrade") upgradeFunction(id); // upgrade tab
+    else if (id.slice(0, 7) === "upgrade") upgradeFunction(id);
+    // upgrade tab
+    else if (id.slice(0, 5) === "skill") skillFunction(id); // skill tab
 }
 
 function unlockFunction(idButton) {
@@ -280,9 +284,27 @@ function upgradeFunction(idButton) {
     }
 }
 
+function skillFunction(idButton) {
+    let id = idButton.slice(5);
+    if (id.slice(0, 6) === "Unlock") {
+        cost = id.slice(6).match(/[A-Z][a-z]+/g);
+        if (resources[cost[0]].point && resources[cost[1]].point) {
+            resources[cost[0]].spend();
+            resources[cost[1]].spend();
+            unlockThing(idButton);
+            player.bought.push(idButton);
+        }
+    }
+}
+
 function unlockThing(idButton) {
-    let id = idButton.slice(6);
-    resources[id].unlock();
+    if (idButton.slice(0, 6) === "unlock") {
+        let id = idButton.slice(6);
+        resources[id].unlock();
+    } else if (idButton.slice(0, 5) === "skill") {
+        let id = idButton.slice(11);
+        resources[id].unlock();
+    }
     removeButtonClick(idButton);
 }
 
@@ -356,7 +378,7 @@ function cheating() {
 
 function showDescription(e) {
     let id = e.target.id;
-    const tabs = ["generators", "unlock", "upgrades", "skills", "idk"];
+    const tabs = ["generators", "unlock", "upgrades", "skills", "idk", "help"];
     const descriptions = {
         unlockBeta: [
             "unlock the &beta; generator and the upgrades tab",
@@ -370,6 +392,10 @@ function showDescription(e) {
             "unlock the &delta; generator and the ??? tab",
             "costs &gamma;",
         ],
+        skillUnlockAlphaBeta: [
+            "unlock the &alpha;&beta; generator and new skills",
+            "costs &alpha; and &beta;"
+        ]
     };
     let buttonText = e.target.innerHTML.trim();
     console.log(id, buttonText);
@@ -384,7 +410,7 @@ function showDescription(e) {
     } else if (id.includes("upgrade") && id.includes("Time")) {
         let res = buttonText.slice(0, -1);
         text.innerHTML = `reduce the time of the ${res} generator`;
-        cost.innerHTML = `costs ${res}`;
+        cost.innerHTML = `costs ${res} (repeatable)`;
     }
     div.innerHTML = "";
     div.appendChild(title);
@@ -400,11 +426,11 @@ function addButtonHover() {
 }
 
 window.onload = function () {
-    //player = ogPlayer;
-    //newRepeatable = OGREPEATABLE;
-    loadPlayer();
+    player = ogPlayer;
+    newRepeatable = OGREPEATABLE;
+    //loadPlayer();
     //fromStart();
-    //cheating();
+    cheating();
     addButtonListeners();
     addButtonHover();
     createResources();

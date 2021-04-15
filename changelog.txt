@@ -24,3 +24,8 @@ Added bar showing which gen is done
 Changed gen page to be smaller so it fits
 Added info when hovering over button
 added 2 new tabs - skills and another one
+
+0.08 -
+Added first skill
+Added short help page
+Improved the layout a bit

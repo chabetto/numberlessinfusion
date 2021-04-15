@@ -5,6 +5,7 @@ html {
     margin: 20px;
     margin-top: 5px;
     user-select: none;
+    width:800px;
 }
 body {
     background-color: black;
@@ -47,6 +48,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     font-size: 30px;
 }
@@ -63,9 +65,13 @@ button:hover {
 .container {
     display: flex;
     margin-bottom: 10px;
+    flex-direction: row;
+    justify-content: center;
 }
 #desc {
     margin-left: 20px;
+    text-align: center;
+    margin-right: 20px;
 }
 .repeatable {
     width: 700px;
