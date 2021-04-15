@@ -426,11 +426,11 @@ function addButtonHover() {
 }
 
 window.onload = function () {
-    player = ogPlayer;
-    newRepeatable = OGREPEATABLE;
-    //loadPlayer();
+    //player = ogPlayer;
+    //newRepeatable = OGREPEATABLE;
+    loadPlayer();
     //fromStart();
-    cheating();
+    //cheating();
     addButtonListeners();
     addButtonHover();
     createResources();
